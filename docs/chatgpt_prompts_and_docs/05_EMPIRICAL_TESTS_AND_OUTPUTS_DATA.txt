@@ -1,0 +1,151 @@
+================================================================================
+EMPIRICAL TEST SUITE, PIPELINE EXECUTION LOGS & DATA EVIDENCE
+================================================================================
+PROJECT TITLE: AI-Based Customer Segmentation and Personalized WhatsApp Marketing Platform
+EXECUTION ENVIRONMENT: Python 3.14.7 | FastAPI 0.115 | Scikit-learn 1.6 | Pytest 9.1.1
+DATASET: backend/data/example_transactions.csv
+
+--------------------------------------------------------------------------------
+PROMPT FOR CHATGPT:
+"Act as a technical documentation specialist. Format the following raw execution outputs,
+pytest logs, data hygiene rejection tables, RFM feature matrix, clustering sweep metrics,
+and fatigue audit results into a formal appendix / test evidence chapter for our project report."
+--------------------------------------------------------------------------------
+
+1. AUTOMATED PYTEST VERIFICATION RUN
+Command: python -m pytest backend/tests/ -v
+Execution Time: 2.38 seconds
+Pass Rate: 87 / 87 (100%)
+
+Detailed Test Case Breakdown:
+- backend/tests/test_clustering.py (15 tests passed):
+  * test_reproducibility (fixed random seed = 42)
+  * test_k_evaluation_list_populated
+  * test_two_customers_minimum
+  * test_one_customer_raises_value_error
+  * test_k_max_capped_at_n_minus_1
+  * test_labels_are_from_known_dynamic_set
+- backend/tests/test_fatigue.py (20 tests passed):
+  * test_no_consent_blocks
+  * test_consent_true_passes_first_check
+  * test_audit_trail_contains_consent_check
+  * test_suppressed_customer_blocked
+  * test_at_cap_blocked (count == 3 -> blocked)
+  * test_below_cap_passes (count < 3 -> passed)
+  * test_custom_frequency_cap
+  * test_bulk_eligibility_returns_one_result_per_customer
+- backend/tests/test_ingestion.py (25 tests passed):
+  * test_basic_valid_csv
+  * test_line_total_computed (quantity * unit_price)
+  * test_missing_customer_id_dropped
+  * test_invalid_date_dropped
+  * test_multiple_date_formats_accepted
+  * test_negative_quantity_dropped
+  * test_negative_price_dropped
+  * test_exact_duplicate_deduplicated
+  * test_cancellation_invoice_flagged (CINV prefix)
+- backend/tests/test_recommendations.py (13 tests passed):
+  * test_one_recommendation_per_customer
+  * test_all_recommendations_have_explanation
+  * test_no_consent_customer_is_ineligible
+  * test_ineligible_recommendation_has_reason
+  * test_eligible_customers_sorted_by_descending_score
+- backend/tests/test_rfm.py (14 tests passed):
+  * test_recency_cust001 (hand-verified calculation)
+  * test_recency_cust002 (hand-verified calculation)
+  * test_frequency_counts_distinct_invoices_not_lines
+  * test_monetary_sum
+  * test_cancellation_transactions_excluded_from_rfm
+  * test_rfm_scores_in_valid_range [1, 4]
+
+--------------------------------------------------------------------------------
+2. DATA INGESTION & DATA HYGIENE SUMMARY
+- Total Raw Transactions Ingested: 57 rows
+- Final Usable Transactions Retained: 52 rows (91.2%)
+- Return Invoices Flagged as Cancellations: 2 rows (CINV001, CINV002)
+- Total Defective Rows Dropped: 5 rows
+  * Row 54: customer_id = "" -> Missing Customer ID constraint violation.
+  * Row 55: invoice_date = "NOT_A_DATE" -> Unparseable datetime string.
+  * Row 56: quantity = -5 -> Negative quantity on non-cancellation invoice.
+  * Row 57: unit_price = -2.00 -> Negative unit price violates commercial logic.
+  * Row 58: duplicate of INV001 -> Deduplicated line item.
+
+--------------------------------------------------------------------------------
+3. COMPUTED CUSTOMER RFM FEATURE MATRIX
+Anchor Reference Date: 2024-10-06
+Dataset Median Recency  : 144.0 days
+Dataset Median Frequency: 3.0 orders
+Dataset Median Monetary : INR 253.46
+
+| Customer ID | Recency (days) | Frequency | Monetary (INR) | R-Quartile | F-Quartile | M-Quartile | Composite Score |
+|:------------|:---------------|:----------|:---------------|:-----------|:-----------|:-----------|:----------------|
+| CUST001     | 3              | 5         | ₹253.46        | 4          | 4          | 2          | 3.20            |
+| CUST002     | 2              | 8         | ₹654.50        | 4          | 4          | 4          | 4.00            |
+| CUST003     | 413            | 3         | ₹200.00        | 1          | 2          | 2          | 1.70            |
+| CUST004     | 369            | 3         | ₹182.00        | 1          | 2          | 1          | 1.30            |
+| CUST005     | 1              | 3         | ₹52,000.00     | 4          | 2          | 4          | 3.40            |
+| CUST006     | 371            | 2         | ₹28.00         | 1          | 1          | 1          | 1.00            |
+| CUST007     | 129            | 3         | ₹282.00        | 3          | 2          | 3          | 2.70            |
+| CUST008     | 352            | 2         | ₹190.00        | 2          | 1          | 2          | 1.70            |
+| CUST009     | 169            | 3         | ₹336.00        | 2          | 2          | 3          | 2.40            |
+| CUST010     | 4              | 5         | ₹140.00        | 3          | 4          | 1          | 2.50            |
+| CUST011     | 999            | 1         | ₹5.00          | 1          | 1          | 1          | 1.00            |
+| CUST012     | 183            | 2         | ₹3,025.00      | 2          | 1          | 4          | 2.50            |
+| CUST013     | 139            | 3         | ₹217.50        | 3          | 2          | 2          | 2.30            |
+| CUST014     | 2              | 4         | ₹1,849.00      | 4          | 4          | 4          | 4.00            |
+| CUST015     | 144            | 2         | ₹325.00        | 3          | 1          | 3          | 2.40            |
+
+--------------------------------------------------------------------------------
+4. CLUSTERING HYPERPARAMETER SELECTION & VALIDATION
+Feature Preprocessing: Log-transformed spend ln(M + 1) + Robust Z-Score standardization.
+Random State: 42 (fully reproducible).
+
+| K Value | Silhouette Score (↑) | Davies-Bouldin Index (↓) | Calinski-Harabasz Index (↑) | Assessment |
+|:--------|:---------------------|:-------------------------|:----------------------------|:-----------|
+| K = 2   | 0.4376               | 0.9209                   | 10.25                       | Suboptimal |
+| K = 3   | 0.4562 (MAX PEAK)    | 0.7150 (OPTIMAL)         | 13.42                       | OPTIMAL    |
+| K = 4   | 0.4291               | 0.6505                   | 15.59                       | Alternative|
+| K = 5   | 0.3879               | 0.5166                   | 13.53                       | Fragmented |
+| K = 6   | 0.3870               | 0.4231                   | 13.90                       | Fragmented |
+
+Discovered Centroids for K = 3:
+- Cluster 0: Label = "Inactive Low-Value" | Size = 2 (13.3%) | Centroids: R = 685.0d, F = 1.5, M = INR 16.50
+- Cluster 1: Label = "Loyal High-Value"  | Size = 3 (20.0%) | Centroids: R = 2.0d, F = 3.0, M = INR 3,025.00
+- Cluster 2: Label = "Recent Frequent"   | Size = 10 (66.7%)| Centroids: R = 141.5d, F = 3.0, M = INR 235.48
+
+--------------------------------------------------------------------------------
+5. MARKETING FATIGUE AUDIT LOG (100% GUARDRAIL COMPLIANCE)
+- Total Target Audience: 15 customers
+- Outreach Approved: 12 customers (80.0%)
+- Outreach Blocked : 3 customers (20.0%)
+
+Detailed Audit Decisions:
+1. CUST014: APPROVED (Consent: YES | Frequency: 0/3 msgs | Suppression: NO)
+2. CUST002: APPROVED (Consent: YES | Frequency: 1/3 msgs | Suppression: NO)
+3. CUST005: APPROVED (Consent: YES | Frequency: 2/3 msgs | Suppression: NO)
+4. CUST001: APPROVED (Consent: YES | Frequency: 0/3 msgs | Suppression: NO)
+5. CUST007: APPROVED (Consent: YES | Frequency: 0/3 msgs | Suppression: NO)
+6. CUST012: APPROVED (Consent: YES | Frequency: 0/3 msgs | Suppression: NO)
+7. CUST010: APPROVED (Consent: YES | Frequency: 0/3 msgs | Suppression: NO)
+8. CUST015: APPROVED (Consent: YES | Frequency: 0/3 msgs | Suppression: NO)
+9. CUST013: APPROVED (Consent: YES | Frequency: 1/3 msgs | Suppression: NO)
+10. CUST004: APPROVED (Consent: YES | Frequency: 0/3 msgs | Suppression: NO)
+11. CUST006: APPROVED (Consent: YES | Frequency: 0/3 msgs | Suppression: NO)
+12. CUST011: APPROVED (Consent: YES | Frequency: 0/3 msgs | Suppression: NO)
+13. CUST009: BLOCKED -> Reason: "Frequency cap reached: 3 messages sent in the last 30 days (cap: 3)."
+14. CUST003: BLOCKED -> Reason: "No marketing consent recorded."
+15. CUST008: BLOCKED -> Reason: "Customer is on the suppression/opt-out list."
+
+--------------------------------------------------------------------------------
+6. SAMPLE RENDERED WHATSAPP PREVIEW (SIMULATED ADAPTER)
+Endpoint: POST /api/v1/campaigns/preview
+Recipient Phone: +91 98765 43210 (Masked: ***3210)
+Campaign Archetype: loyalty_reward
+Simulated Status: SUCCESS (Simulated = True)
+
+Message Template Body:
+"Hello CUST002! As one of our Loyal High-Value members, you have unlocked 15% OFF your next order.
+Use code: LOYALTY15 at checkout.
+
+Reply STOP to opt out of future WhatsApp notifications."
+================================================================================

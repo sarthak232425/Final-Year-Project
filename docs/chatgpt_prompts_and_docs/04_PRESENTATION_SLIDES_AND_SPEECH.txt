@@ -1,0 +1,94 @@
+================================================================================
+FINAL YEAR PROJECT REVIEW PRESENTATION SLIDES & SPEECH TRANSCRIPT
+================================================================================
+PROJECT TITLE: AI-Based Customer Segmentation and Personalized WhatsApp Marketing Platform
+AUDIENCE: College Evaluation Committee & External Examiner Panel
+DURATION: 8–10 Minutes
+
+--------------------------------------------------------------------------------
+PROMPT FOR CHATGPT:
+"Act as a presentation design specialist. Convert the following slide deck structure,
+detailed slide content, speaking notes, and time allocations into a professional
+slide presentation outline or generate a formatted PDF slide summary for our college review."
+--------------------------------------------------------------------------------
+
+SLIDE 1: TITLE SLIDE (Time: 0:00 - 0:45)
+- Title: AI-Based Customer Segmentation and Personalized WhatsApp Marketing Platform
+- Subtitle: Final Year Project Review & Demonstration (2026-2027)
+- Domain: Machine Learning, Data Analytics & CRM Marketing Automation
+- Team Members: Department of Information Technology
+- Speaker Note:
+  "Good morning respected professors and panel members. Today, we are presenting our Final
+  Year Project: an intelligent, privacy-compliant retention platform that bridges unsupervised
+  behavioral machine learning with conversational WhatsApp marketing."
+
+SLIDE 2: MOTIVATION & PROBLEM STATEMENT (Time: 0:45 - 2:00)
+- The Industry Dilemma:
+  * Email Marketing: sub-3% click-through rates, severe spam-filter routing.
+  * WhatsApp Marketing: >90% open rates, instant customer engagement within minutes.
+- The Core Problem:
+  * Sending broadcast WhatsApp blasts causes intense "Marketing Fatigue", triggering high
+    opt-out rates (>15%) and brand backlash.
+  * Lack of dynamic behavioral targeting and absence of anti-fatigue frequency guardrails.
+- Project Goal:
+  * Build an end-to-end platform that cleans raw sales data, discovers natural behavioral
+    segments, and enforces automated fatigue rules before recommending campaigns.
+
+SLIDE 3: SYSTEM ARCHITECTURE & DATA FLOW (Time: 2:00 - 3:30)
+- Visual Architecture:
+  * Ingestion Service: Validates invoices, handles return cancellations, drops corrupt data.
+  * RFM Engine: Aggregates Recency, Frequency, and Monetary spend; applies log & Z-score scaling.
+  * Clustering Engine: K-Means with programmatic hyperparameter sweep (Silhouette, DBI, CHI).
+  * Fatigue Guardrails: Checks explicit consent, suppression list, and rolling 30-day frequency caps.
+  * Recommendation Engine: Generates explainable campaign archetypes with plain-English rationales.
+  * WhatsApp Adapter: Abstracted gateway running on a safe local Mock engine with simulated badges.
+
+SLIDE 4: MATHEMATICAL FORMULATION & FEATURE ENGINEERING (Time: 3:30 - 4:45)
+- RFM Metrics per customer i:
+  * Recency: R_i = (t_ref - max(t_ij))
+  * Frequency: F_i = count(distinct invoice_id_ij)
+  * Monetary: M_i = sum(quantity * unit_price) for non-cancellation lines.
+- Skewness Normalization:
+  * Spend exhibits severe right-skewed Pareto distribution.
+  * We apply M'_i = ln(M_i + 1) to compress extreme tails.
+  * Robust Z-score scaling z = (x - mu) / sigma standardizes features to prevent Euclidean
+    dominance by monetary spend during K-Means distance calculations.
+
+SLIDE 5: CLUSTERING EVALUATION & EMPIRICAL SWEEP (Time: 4:45 - 6:15)
+- Programmatic K Sweep (K=2 to 6):
+  * K=2: Silhouette = 0.4376 | DBI = 0.9209 | CHI = 10.25
+  * K=3: Silhouette = 0.4562 (OPTIMAL PEAK) | DBI = 0.7150 | CHI = 13.42
+  * K=4: Silhouette = 0.4291 | DBI = 0.6505 | CHI = 15.59
+  * K=5: Silhouette = 0.3879 | DBI = 0.5166 | CHI = 13.53
+- Discovered Behavioral Cohorts:
+  1. Loyal High-Value (20.0%): Centroids R=2.0d, F=3.0, M=INR 3,025 -> Action: VIP Loyalty Reward
+  2. Recent Frequent (66.7%): Centroids R=141.5d, F=3.0, M=INR 235 -> Action: General / Upsell
+  3. Inactive Low-Value (13.3%): Centroids R=685.0d, F=1.5, M=INR 16 -> Action: Win-Back Campaign
+
+SLIDE 6: MARKETING FATIGUE GUARDRAILS & PRIVACY ENGINE (Time: 6:15 - 7:30)
+- Deterministic Outreach Policy Check:
+  Eligibility = Consent(Yes) AND NOT Suppressed AND (Messages_Last_30_Days < 3)
+- Live Audit Results:
+  * Total Target Audience: 15 customers
+  * Approved for Outreach: 12 (80.0%)
+  * Blocked by Guardrails: 3 (20.0%)
+- Exact Blocked Cases Demonstrated:
+  * CUST009: Blocked by 30-day frequency cap (Hit 3/3 messages).
+  * CUST003: Blocked because marketing consent was not provided.
+  * CUST008: Blocked because user is listed on the global opt-out registry.
+
+SLIDE 7: SOFTWARE QUALITY ASSURANCE & DEMO PREVIEW (Time: 7:30 - 8:45)
+- Testing Rigor:
+  * 87 / 87 Pytest unit tests passing (100% pass rate in 2.38s).
+  * Hand-verified mathematical calculations, edge-case handling for malformed CSVs.
+- Interactive Dashboard (React 18 + FastAPI):
+  * CSV Upload -> Quality Audit Summary -> Cluster Distribution Cards -> Explainable Campaign Table -> Simulated WhatsApp Preview.
+
+SLIDE 8: CONCLUSION & FUTURE WORK (Time: 8:45 - 9:30)
+- Deliverables Achieved:
+  * Fully functioning minimum viable product (MVP).
+  * Mathematical validation with Silhouette Score > 0.45.
+  * 100% adherence to privacy and anti-fatigue policies.
+- Roadmap: Contextual Multi-Armed Bandits (MAB) for automated discount tuning; Shopify POS webhooks.
+- Final Speaker Note: "Thank you, professors. We invite any questions or review feedback."
+================================================================================

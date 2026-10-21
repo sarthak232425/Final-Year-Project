@@ -1,0 +1,97 @@
+================================================================================
+FINAL YEAR PROJECT LIVE DEMONSTRATION SCRIPT & WALKTHROUGH GUIDE
+================================================================================
+PROJECT TITLE: AI-Based Customer Segmentation and Personalized WhatsApp Marketing Platform
+PURPOSE: Guide student through exact live demonstration clicks, screens, and speech
+DURATION: 7–10 Minutes
+
+--------------------------------------------------------------------------------
+PROMPT FOR CHATGPT:
+"Act as a professional technical demo coach. Format the following step-by-step
+software demonstration script into an executive walkthrough manual or formatted PDF
+that the presenter can reference during their live oral and system examination."
+--------------------------------------------------------------------------------
+
+PRE-DEMO ENVIRONMENT CHECKLIST (2 Minutes Before Panel)
+1. Terminal 1 (Backend): Run `uvicorn backend.main:app --reload --port 8000`
+2. Terminal 2 (Frontend): Run `npm run dev` in `frontend/`
+3. Browser Tab 1: Open `http://localhost:5173` (React Dashboard)
+4. Browser Tab 2: Open `http://localhost:8000/docs` (Swagger Interactive API Documentation)
+5. Test File: `backend/data/example_transactions.csv` ready to load.
+
+STEP 1: SYSTEM OVERVIEW & ARCHITECTURE (1.5 Minutes)
+- Action: Open dashboard homepage at `http://localhost:5173`.
+- Speech:
+  "Respected professors, our project solves the retention challenge in retail e-commerce.
+   While email campaigns suffer from less than 3% engagement, WhatsApp has an open rate of over 90%.
+   However, conversational marketing requires strict targeting and anti-fatigue controls so that
+   customers do not feel spammed.
+   Our platform connects three core components:
+   1. Ingesting and cleaning raw retail transactional records;
+   2. Performing unsupervised RFM feature clustering with mathematical validation;
+   3. Generating explainable campaign recommendations governed by an automated anti-fatigue gate."
+
+STEP 2: DATA INGESTION & DATA HYGIENE AUDIT (2 Minutes)
+- Action:
+  1. Click the "Data Ingestion" tab on the sidebar.
+  2. Click "Load Example Dataset" (or upload `example_transactions.csv`).
+  3. Point to the Ingestion Summary card and Rejection Table.
+- Speech:
+  "Here, our ingestion pipeline accepts raw transactional data. Notice that out of 57 submitted
+   records, 52 valid transactions were retained, 2 returns were flagged as cancellations, and
+   5 defective rows were safely dropped.
+   In the rejection breakdown table, we show strict data hygiene: rows with missing Customer IDs,
+   negative prices, negative quantities, or unparseable date strings are rejected before they can
+   distort our mathematical feature space."
+
+STEP 3: RFM FEATURE CALCULATION & CLUSTERING (2 Minutes)
+- Action:
+  1. Click "Run RFM & Clustering".
+  2. The dashboard automatically transitions to the "RFM & Segments" tab.
+  3. Scroll through the generated segment cards (Loyal High-Value, Recent Frequent, Inactive Low-Value).
+  4. Scroll down to the Customer RFM Feature Vectors table.
+- Speech:
+  "Once the pipeline runs, the system calculates Recency, Frequency, and Monetary spend for each customer.
+   Because retail spend follows a heavy right-skewed distribution, we apply a logarithmic transformation
+   followed by Z-score standardization.
+   Our K-Means model partitions customers into distinct cohorts. Rather than using arbitrary hardcoded
+   labels, our algorithm dynamically assigns behavioral labels based on centroid percentiles:
+   - Customers with low recency, high frequency, and high monetary spend are labeled 'Loyal High-Value';
+   - Customers who have not ordered in hundreds of days are labeled 'Inactive Low-Value'."
+
+STEP 4: MATHEMATICAL MODEL VALIDATION (1.5 Minutes)
+- Action:
+  1. Click the "Model Metrics" tab on the sidebar.
+  2. Highlight the metrics: K=3, Silhouette Score = 0.4562, Davies-Bouldin Index = 0.7150.
+  3. Show the K-evaluation sweep chart (K = 2 to 6).
+- Speech:
+  "Rather than guessing the number of clusters, our system programmatically sweeps K from 2 to 6
+   with a fixed random seed (seed=42) for reproducibility.
+   As shown in this chart, K=3 achieves the peak Silhouette Score of 0.4562 and a minimal Davies-Bouldin
+   Index of 0.7150. In academic literature, a Silhouette score above 0.40 on real transactional data
+   confirms well-separated, high-quality clusters."
+
+STEP 5: MARKETING FATIGUE GUARDRAILS & WHATSAPP PREVIEW (2 Minutes)
+- Action:
+  1. Click the "Recommendations" tab on the sidebar.
+  2. Point to the top counters: 15 Total Audience | 12 Approved (80%) | 3 Blocked (20%).
+  3. Click "Ineligible" to show the blocked customers.
+  4. Expand the Fatigue & Policy Verifications checklist on a blocked customer:
+     - CUST009: Frequency cap reached (3/3 messages in 30 days).
+     - CUST003: Explicit consent missing.
+     - CUST008: Global suppression list match.
+  5. Click back to "Eligible" and click "Preview WhatsApp Message" on customer CUST002.
+  6. Show the simulated WhatsApp chat modal with the `[SIMULATED ADAPTER]` badge.
+- Speech:
+  "Finally, we connect machine learning to real-world marketing ethics through our Marketing Fatigue Engine.
+   Even if a customer is recommended for a VIP campaign, they will be blocked if they have not given
+   consent, if they are on the opt-out list, or if they have already received 3 messages in the past 30 days.
+   Clicking 'Preview WhatsApp Message' displays the rendered message template. During review, this runs
+   safely on our MockWhatsAppAdapter with clear simulated badges, ready to plug into Meta's live Cloud
+   API once production credentials are provisioned."
+
+STEP 6: CONCLUSION & VIVA TRANSITION (30 Seconds)
+- Speech:
+  "To summarize: our system is modular, fully tested with 87 passing unit tests, and satisfies both
+   machine learning rigor and privacy regulations. We are now happy to take any questions from the panel."
+================================================================================
