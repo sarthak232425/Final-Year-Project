@@ -72,18 +72,20 @@
 ## Priority B — After Core Works
 
 - [x] SQLite database stores results persistently (`backend/database.py`, `backend/models/`)
-- [ ] Multi-tenant data isolation enforced in backend queries
+- [x] Multi-tenant data isolation enforced in backend queries (`backend/services/tenancy.py`, `backend/tests/test_tenancy.py`)
 - [x] WhatsApp mock adapter runs with SIMULATED label (`backend/adapters/whatsapp.py`)
-- [ ] Webhook event deduplication implemented
+- [x] Webhook event deduplication implemented (`backend/adapters/whatsapp.py`, `backend/tests/test_adapters.py`)
 
 ---
 
 ## Priority C — After Review
 
 - [ ] Live WhatsApp sending with verified credentials
-- [ ] Advanced recommendation model (Contextual Multi-Armed Bandits)
-- [ ] CRM/POS integrations (Shopify, WooCommerce)
+- [x] Advanced recommendation model (Contextual Multi-Armed Bandits) implemented (`backend/services/bandit.py`, `backend/tests/test_bandit.py`)
+- [x] CRM/POS integrations (Shopify, WooCommerce) implemented (`backend/services/integrations.py`, `backend/tests/test_integrations.py`)
 - [ ] Production cloud deployment
+
+> **Verification note (22 October 2026):** The backend suite passes with 106 tests. The frontend build passes when run from `frontend/`. Live WhatsApp sending remains blocked until verified Meta credentials are supplied, and production cloud deployment remains future work.
 
 ---
 

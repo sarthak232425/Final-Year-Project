@@ -68,6 +68,13 @@ export const App: React.FC = () => {
           </div>
         </header>
 
+        {systemHealthy === false && (
+          <div className="api-alert" role="status">
+            <strong>Backend API unavailable.</strong>
+            <span>Start FastAPI on port 8000 to upload data and run analysis.</span>
+          </div>
+        )}
+
         {activeTab === 'upload' && (
           <UploadView
             onAnalysisComplete={handleAnalysisComplete}

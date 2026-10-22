@@ -139,17 +139,17 @@ Final-Year-Project/
 | Phase | Description | Priority | Status |
 |-------|-------------|----------|--------|
 | 0 | Workspace setup, planning, folder structure | A | ✅ Done |
-| 1 | Backend skeleton: FastAPI + SQLAlchemy + health endpoint | A | 🔄 In Progress |
-| 2 | CSV ingestion service + validation + example dataset | A | 🔄 In Progress |
-| 3 | RFM feature engineering + K-Means clustering + evaluation metrics | A | 🔄 In Progress |
-| 4 | Fatigue rules + consent eligibility + campaign recommendations | A | 🔄 In Progress |
-| 5 | FastAPI endpoints for all services | A | 🔄 In Progress |
-| 6 | React frontend: upload → analysis → segments → recommendations | A | 🔄 In Progress |
-| 7 | Automated tests (pytest) | A | 🔄 In Progress |
-| 8 | Research paper draft | A | ⏳ Pending |
-| 9 | Review presentation and demonstration materials | A | ⏳ Pending |
-| 10 | Database persistence + multi-tenancy | B | ⏳ Pending |
-| 11 | WhatsApp adapter (mock + live skeleton) | B | ⏳ Pending |
+| 1 | Backend skeleton: FastAPI + SQLAlchemy + health endpoint | A | ✅ Done |
+| 2 | CSV ingestion service + validation + example dataset | A | ✅ Done |
+| 3 | RFM feature engineering + K-Means clustering + evaluation metrics | A | ✅ Done |
+| 4 | Fatigue rules + consent eligibility + campaign recommendations | A | ✅ Done |
+| 5 | FastAPI endpoints for all services | A | ✅ Done |
+| 6 | React frontend: upload → analysis → segments → recommendations | A | ✅ Done |
+| 7 | Automated tests (pytest) | A | ✅ Done |
+| 8 | Research paper draft | A | ✅ Done |
+| 9 | Review presentation and demonstration materials | A | ✅ Done |
+| 10 | Database persistence + multi-tenancy | B | ✅ Done |
+| 11 | WhatsApp adapter (mock + live skeleton) | B | ✅ Done |
 | 12 | Live WhatsApp sending (requires credentials) | C | 🔒 Blocked |
 
 ---

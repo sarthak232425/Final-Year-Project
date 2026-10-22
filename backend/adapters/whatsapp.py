@@ -63,6 +63,42 @@ class WebhookEvent:
     failure_reason: Optional[str] = None
 
 
+
+# ─── Webhook Deduplicator ───────────────────────────────────────────────────────
+
+class WebhookDeduplicator:
+    """
+    Maintains an in-memory cache of observed (message_id, event_type) events
+    to guarantee idempotent webhook handling and prevent duplicate side-effects.
+    """
+    def __init__(self, max_entries: int = 10000):
+        self._max_entries = max_entries
+        self._seen: dict[str, datetime] = {}
+
+    def is_duplicate_and_record(self, message_id: str, event_type: str) -> bool:
+        if not message_id:
+            return False
+        key = f"{message_id}:{event_type}"
+        if key in self._seen:
+            return True
+        if len(self._seen) >= self._max_entries:
+            oldest_key = next(iter(self._seen))
+            del self._seen[oldest_key]
+        self._seen[key] = datetime.utcnow()
+        return False
+
+    def is_duplicate(self, message_id: str, event_type: str) -> bool:
+        if not message_id:
+            return False
+        return f"{message_id}:{event_type}" in self._seen
+
+    def clear(self):
+        self._seen.clear()
+
+
+default_webhook_deduplicator = WebhookDeduplicator()
+
+
 # ─── Abstract interface ────────────────────────────────────────────────────────
 
 class WhatsAppAdapter(ABC):
@@ -98,6 +134,9 @@ class MockWhatsAppAdapter(WhatsAppAdapter):
     No real messages are ever sent.
     """
 
+    def __init__(self, deduplicator: Optional[WebhookDeduplicator] = None):
+        self.deduplicator = deduplicator or default_webhook_deduplicator
+
     def send_message(
         self,
         to_phone: str,
@@ -124,7 +163,7 @@ class MockWhatsAppAdapter(WhatsAppAdapter):
 
     def parse_webhook_event(self, payload: dict) -> list[WebhookEvent]:
         """
-        Parse a simulated or real webhook payload structure.
+        Parse a simulated or real webhook payload structure with deduplication.
         Returns empty list for unrecognised payloads.
         """
         events: list[WebhookEvent] = []
@@ -133,14 +172,17 @@ class MockWhatsAppAdapter(WhatsAppAdapter):
                 for change in entry.get("changes", []):
                     value = change.get("value", {})
                     for status in value.get("statuses", []):
+                        msg_id = status.get("id", "")
+                        evt_type = status.get("status", "unknown")
+                        is_dup = self.deduplicator.is_duplicate_and_record(msg_id, evt_type)
                         events.append(WebhookEvent(
-                            event_type=status.get("status", "unknown"),
-                            message_id=status.get("id", ""),
+                            event_type=evt_type,
+                            message_id=msg_id,
                             customer_phone=f"***{status.get('recipient_id', '')[-4:]}",
                             timestamp=datetime.utcfromtimestamp(
                                 int(status.get("timestamp", 0))
                             ),
-                            is_duplicate=False,
+                            is_duplicate=is_dup,
                         ))
         except Exception:
             pass
@@ -164,21 +206,26 @@ class LiveWhatsAppAdapter(WhatsAppAdapter):
 
     BASE_URL = "https://graph.facebook.com/v21.0"
 
-    def __init__(self):
-        settings = get_settings()
-        if not settings.whatsapp_live_mode:
+    def __init__(
+        self,
+        settings: Optional[any] = None,
+        deduplicator: Optional[WebhookDeduplicator] = None,
+    ):
+        cfg = settings or get_settings()
+        if not cfg.whatsapp_live_mode:
             raise RuntimeError(
                 "LiveWhatsAppAdapter instantiated but WHATSAPP_LIVE_MODE is false. "
                 "Use MockWhatsAppAdapter for development."
             )
-        if not settings.whatsapp_token:
+        if not cfg.whatsapp_token:
             raise RuntimeError("WHATSAPP_TOKEN is not set in .env.")
-        if not settings.whatsapp_phone_number_id:
+        if not cfg.whatsapp_phone_number_id:
             raise RuntimeError("WHATSAPP_PHONE_NUMBER_ID is not set in .env.")
 
-        self._token = settings.whatsapp_token
-        self._phone_number_id = settings.whatsapp_phone_number_id
-        self._webhook_verify_token = settings.whatsapp_webhook_verify_token
+        self._token = cfg.whatsapp_token
+        self._phone_number_id = cfg.whatsapp_phone_number_id
+        self._webhook_verify_token = cfg.whatsapp_webhook_verify_token
+        self.deduplicator = deduplicator or default_webhook_deduplicator
 
     def send_message(
         self,
@@ -259,21 +306,24 @@ class LiveWhatsAppAdapter(WhatsAppAdapter):
         return hmac.compare_digest(expected, provided)
 
     def parse_webhook_event(self, payload: dict) -> list[WebhookEvent]:
-        """Parse Meta webhook payload into structured events."""
+        """Parse Meta webhook payload into structured events with deduplication."""
         events: list[WebhookEvent] = []
         try:
             for entry in payload.get("entry", []):
                 for change in entry.get("changes", []):
                     value = change.get("value", {})
                     for status in value.get("statuses", []):
+                        msg_id = status.get("id", "")
+                        evt_type = status.get("status", "unknown")
+                        is_dup = self.deduplicator.is_duplicate_and_record(msg_id, evt_type)
                         events.append(WebhookEvent(
-                            event_type=status.get("status", "unknown"),
-                            message_id=status.get("id", ""),
+                            event_type=evt_type,
+                            message_id=msg_id,
                             customer_phone=f"***{status.get('recipient_id', '')[-4:]}",
                             timestamp=datetime.utcfromtimestamp(
                                 int(status.get("timestamp", 0))
                             ),
-                            is_duplicate=False,
+                            is_duplicate=is_dup,
                             failure_reason=status.get("errors", [{}])[0].get(
                                 "message"
                             ) if status.get("errors") else None,
