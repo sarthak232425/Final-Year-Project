@@ -1,14 +1,31 @@
 # Project Status — AI Customer Segmentation & WhatsApp Marketing Platform
 
-**Last Updated:** 2026-10-19  
+**Last Updated:** 2026-10-22
 **Review Deadline:** 19–24 October 2026  
-**Current Milestone:** Review 2 Deliverables Complete (Implementation MVP + Research Paper + Presentation Deck + Topic Submission)
+**Current Milestone:** Review 2 MVP complete; real-time stability research extension planned
 
 ---
 
-## Current Overall Status: ✅ REVIEW 2 REQUIREMENTS 100% SATISFIED
+## Current Overall Status: ✅ REVIEW 2 MVP COMPLETE; RESEARCH EXTENSION NOT YET IMPLEMENTED
 
-All deliverables required for the Second Project and Research Paper Review (19–24 October 2026) are fully implemented, documented, and ready to present.
+The batch MVP is runnable and review-ready. The proposed real-time, stability-aware research direction is documented as future work and must not be described as implemented.
+
+### Verified baseline
+
+- CSV ingestion, RFM calculation, K-Means evaluation, dynamic labelling, fatigue rules, recommendations, dashboard views, and mock WhatsApp adapter are implemented.
+- The checked-in empirical output uses `backend/data/example_transactions.csv`: 57 raw rows, 15 customers, 52 retained rows, 2 cancellations, 5 dropped rows, and 1 duplicate.
+- The recorded baseline selects `K=3` with silhouette `0.4562`, Davies–Bouldin `0.7150`, and Calinski–Harabasz `13.42`.
+- The backend workflow is currently process-local and uses the in-memory session; SQLAlchemy models and tenant helpers are not wired into the upload and analysis routers.
+
+### Proposed or incomplete
+
+- Event-driven ingestion, incremental clustering, stability checks, latency/throughput evaluation, persistent webhook handling, and real-time dashboard updates are not implemented.
+- The LinUCB service, CRM/POS parsers, webhook signature parsing, and adapter-level deduplication exist as isolated components, not as an integrated research pipeline.
+- Live WhatsApp sending remains disabled without verified Meta credentials; no production cloud deployment exists.
+
+### Evidence correction
+
+Earlier documents cited `K=4` metrics (`0.4328`, `0.8712`, `194.70`) and a `9 approved / 6 blocked` audience split. Those values are not supported by the checked-in generated output and are retained only as historical claims requiring provenance. The IEEE draft uses the verified repository-recorded baseline instead.
 
 ---
 
@@ -39,9 +56,9 @@ All deliverables required for the Second Project and Research Paper Review (19�
 ### ✅ MILESTONE 3 — RFM Analytics & Unsupervised Clustering
 - [x] RFM feature engineering service (`backend/services/rfm.py`)
 - [x] K-Means clustering service with automated parameter sweep (`backend/services/clustering.py`)
-- [x] Silhouette Score computed (0.4328 at K=4)
-- [x] Davies–Bouldin Index computed (0.8712 at K=4)
-- [x] Calinski–Harabasz Index computed (194.70 at K=4)
+- [x] Silhouette Score computed (0.4562 at K=3 on the bundled baseline)
+- [x] Davies–Bouldin Index computed (0.7150 at K=3 on the bundled baseline)
+- [x] Calinski–Harabasz Index computed (13.42 at K=3 on the bundled baseline)
 - [x] Dynamic segment labeling based on cluster centroids
 - [x] Fully reproducible with `random_seed=42`
 
@@ -96,9 +113,18 @@ All deliverables required for the Second Project and Research Paper Review (19�
 |---|---|---|
 | **College Topic Form** | [`docs/COLLEGE_FORM_SUBMISSION.md`](file:///c:/Users/Sarth/Documents/GitHub/Final-Year-Project/docs/COLLEGE_FORM_SUBMISSION.md) | Ready to Submit |
 | **Research Paper Draft** | [`docs/RESEARCH_PAPER_DRAFT.md`](file:///c:/Users/Sarth/Documents/GitHub/Final-Year-Project/docs/RESEARCH_PAPER_DRAFT.md) | Ready for Review |
+| **IEEEtran Paper Source** | [`docs/RESEARCH_PAPER_DRAFT.tex`](file:///c:/Users/Sarth/Documents/GitHub/Final-Year-Project/docs/RESEARCH_PAPER_DRAFT.tex) | Compiles Successfully |
 | **Presentation Deck** | [`docs/PRESENTATION_SLIDES.md`](file:///c:/Users/Sarth/Documents/GitHub/Final-Year-Project/docs/PRESENTATION_SLIDES.md) | Ready to Present |
 | **Demonstration Script** | [`docs/DEMO_SCRIPT.md`](file:///c:/Users/Sarth/Documents/GitHub/Final-Year-Project/docs/DEMO_SCRIPT.md) | Ready to Rehearse |
 | **Viva Voce Prep** | [`docs/VIVA_PREPARATION.md`](file:///c:/Users/Sarth/Documents/GitHub/Final-Year-Project/docs/VIVA_PREPARATION.md) | Ready to Study |
 | **Backend Implementation** | [`backend/`](file:///c:/Users/Sarth/Documents/GitHub/Final-Year-Project/backend/) | Complete & Tested |
 | **Frontend Dashboard** | [`frontend/`](file:///c:/Users/Sarth/Documents/GitHub/Final-Year-Project/frontend/) | Complete & Connected |
 | **System Architecture** | [`docs/ARCHITECTURE.md`](file:///c:/Users/Sarth/Documents/GitHub/Final-Year-Project/docs/ARCHITECTURE.md) | Documented |
+
+## Known Code and Documentation Discrepancies
+
+- `README.md` references `backend.scripts.init_db`, but that script is not present.
+- Older architecture text listed campaign routes that are not registered by `backend/main.py`.
+- The active frontend displays RFM score denominators as `/5`, while the current backend scoring output is based on four bins.
+- The segment filter control is present in the frontend but currently does not filter the customer table.
+- The frontend WhatsApp preview is a UI simulation; it does not create a persisted `MessageEvent` or invoke the backend adapter.

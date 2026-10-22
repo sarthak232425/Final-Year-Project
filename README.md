@@ -151,10 +151,10 @@ To use the **UCI Online Retail dataset** (real transaction data, no WhatsApp/con
 
 | Role | Member | Responsibility |
 |------|--------|----------------|
-| Backend & Database | TBD | FastAPI, SQLAlchemy, authentication |
-| Data & ML | TBD | RFM, clustering, evaluation |
-| Frontend | TBD | React dashboard, visualizations |
-| Integrations & QA | TBD | WhatsApp adapter, tests, deployment |
+| Backend & Database | Sarthak Gawari | FastAPI, SQLAlchemy, authentication |
+| Data & ML | Yash Kachale | RFM, clustering, evaluation |
+| Frontend | Sushant Bhanwase | React dashboard, visualizations |
+| Integrations & QA | Jaykumar Kale | WhatsApp adapter, tests, deployment |
 
 ---
 
@@ -164,3 +164,4 @@ To use the **UCI Online Retail dataset** (real transaction data, no WhatsApp/con
 - [Architecture](docs/ARCHITECTURE.md)
 - [Status](docs/STATUS.md)
 - [Review Checklist](docs/REVIEW_CHECKLIST.md)
+- [IEEEtran Research Paper Source](docs/RESEARCH_PAPER_DRAFT.tex)

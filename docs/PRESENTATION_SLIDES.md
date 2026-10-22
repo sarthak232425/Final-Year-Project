@@ -1,7 +1,9 @@
 # Review Presentation Deck: Slide-by-Slide Outline & Script
 
-**Project Title:** AI-Based Customer Segmentation and Personalized WhatsApp Marketing Platform  
-**Presenter:** B.E. Information Technology Final Year Project Team  
+**Project Title:** Real-Time, Stability-Aware Customer Segmentation and Personalized WhatsApp Campaign Recommendation
+**Baseline System:** AI-Based Customer Segmentation and Personalized WhatsApp Marketing Platform
+**Presenter:** Sarthak Gawari, Yash Kachale, Sushant Bhanwase, and Jaykumar Kale
+**Institution:** Pune Institute of Computer Technology (PICT), Pune
 **Review Stage:** Second Review (19–24 October 2026)  
 **Total Slides:** 12 Slides (~8–10 Minutes)
 
@@ -30,7 +32,7 @@
 ### Slide 3: System Architecture & Data Flow
 - **Layered Architecture:**
   1. **Ingestion & Quality Gate:** CSV parsing, cancellation handling ('C' invoices), anomaly filtering.
-  2. **Feature Engineering:** Recency, Frequency, Monetary (RFM) extraction, log-transform, Z-score standardization.
+  2. **Feature Engineering:** Recency, Frequency, Monetary (RFM) extraction, log-transform, and `RobustScaler` preprocessing.
   3. **Unsupervised ML Engine:** K-Means clustering with automated K-sweep (Silhouette, Davies–Bouldin, Calinski–Harabasz).
   4. **Recommendation & Fatigue Engine:** Campaign matching, heuristic scoring, consent verification, and rolling 30-day frequency caps.
   5. **Presentation Layer:** FastAPI REST API backend with React/TypeScript dashboard and WhatsApp Adapter (Mocked & Live).
@@ -44,9 +46,8 @@
   - Non-positive quantities ($q \le 0$) and unit prices ($p \le 0$) $\rightarrow$ Dropped.
   - Invoices starting with 'C' $\rightarrow$ Flagged and isolated as returns/cancellations.
   - Timestamps parsed and normalized to UTC.
-- **Verified Results on Benchmark Data:**
-  - 100% of invalid rows isolated with detailed audit logging.
-  - Zero corrupted rows enter the RFM vector computation.
+  - **Verified Results on the bundled verification dataset:** 57 raw rows, 52 retained rows, 2 cancellations, 5 dropped rows, and 1 duplicate.
+  - The dataset is synthetic verification data; no UCI file is checked into the repository.
 - **Speaker Note:** "Real-world retail datasets are messy. Our quality control gate guarantees that erroneous or cancelled transactions never skew our clustering centroids."
 
 ---
@@ -65,16 +66,12 @@
 
 ### Slide 6: Unsupervised Clustering & Optimal K Selection
 - **Clustering Methodology:** K-Means with fixed reproducibility seed ($\text{seed}=42$).
-- **Multi-Metric Validation Sweep ($K \in [2, 6]$):**
-  - **$K=4$ Selected as Optimal:**
-    - Peak Silhouette Score: **0.4328** (Higher is better)
-    - Minimum Davies–Bouldin Index: **0.8712** (Lower is better)
-    - Calinski–Harabasz Index: **194.70**
-- **Identified Customer Cohorts:**
-  - **Champions:** Low Recency (12d), High Frequency (8.5), High Spend ($1,240).
-  - **Loyal Steady:** Medium Recency (28d), Consistent Frequency (4.0).
-  - **At Risk:** High Recency (92d), Prior regular spenders drifting away.
-  - **Hibernating:** Very high Recency (180d), Low Frequency (1.0).
+- **Recorded baseline sweep ($K \in [2, 6]$):**
+  - **$K=3$ selected by silhouette:**
+    - Peak Silhouette Score: **0.4562** (Higher is better)
+    - Davies–Bouldin Index: **0.7150**
+    - Calinski–Harabasz Index: **13.42**
+- **Recorded baseline cohorts:** Inactive Low-Value, Loyal High-Value, and Recent Frequent.
 - **Speaker Note:** "Rather than guessing the number of clusters, our system programmatically evaluates Silhouette, Davies-Bouldin, and Calinski-Harabasz metrics across multiple values of K, confirming K=4 as the mathematical optimum."
 
 ---
@@ -98,8 +95,8 @@
   3. **Rolling Frequency Cap:** Maximum 3 messages allowed within any rolling 30-day window.
   4. **Recency Alignment:** Campaign lifecycle matching (e.g., Win-Back requires $R \ge 30$ days).
 - **Empirical Demonstration:**
-  - In our 15-customer verification dataset: 9 approved, 6 blocked with explicit policy reasons.
-  - Zero unauthorized message dispatches.
+  - In the recorded 15-customer output: 12 approved and 3 blocked with explicit policy reasons.
+  - The result is a simulated recommendation audit, not a live dispatch experiment.
 - **Speaker Note:** "This is our primary ethical innovation: our fatigue gate prevents customers from receiving too many messages or getting contacted after opting out."
 
 ---
@@ -136,15 +133,18 @@
 
 ---
 
-### Slide 12: Review 2 Status & Future Roadmap
+### Slide 12: Review 2 Status & Research Roadmap
 - **Review 2 Deliverables (Completed):**
   - [x] Runnable end-to-end MVP implementation.
-  - [x] Verified K-Means clustering with Silhouette Score (0.4328) on retail benchmark.
+  - [x] Verified batch K-Means clustering with Silhouette Score (0.4562 at K=3) on the bundled verification dataset.
   - [x] Automated fatigue and consent controls.
   - [x] Complete research paper draft (IEEE format with 10+ verified references).
   - [x] Final topic submission text prepared for college form.
-- **Next Phase Roadmap (Review 3):**
-  - Multi-tenant database isolation.
-  - Live Meta WhatsApp Business Cloud API integration with webhook callbacks.
-  - Churn prediction modeling using XGBoost.
+- **Research Extension (pending implementation):**
+  - Event-driven or micro-batch transaction updates.
+  - Stability checks for segment and recommendation switching.
+  - Latency, throughput, ARI, drift, overhead, and policy-invariant evaluation.
+  - Persistent tenant-aware events and signature-verified webhook processing.
+
+**Important:** The current dashboard is a batch, process-local MVP. The real-time extension is a proposed research contribution, not a completed feature.
 - **Thank You:** Questions & Discussion.

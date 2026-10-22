@@ -1,15 +1,17 @@
 # Project Plan — AI-Based Customer Segmentation and Personalized WhatsApp Marketing Platform
 
 **Project Title:** AI-Based Customer Segmentation and Personalized WhatsApp Marketing Platform  
+**Research Working Title:** Real-Time, Stability-Aware Customer Segmentation and Personalized WhatsApp Campaign Recommendation
 **Degree:** BE Information Technology  
 **Second Review Deadline:** 19–24 October 2026  
-**Team Size:** 4 members (roles TBD)
+**Team Size:** 4 members
+**Team Members:** Sarthak Gawari, Yash Kachale, Sushant Bhanwase, Jaykumar Kale
 
 ---
 
 ## Research Question
 
-> How can RFM-based customer segmentation, explainable marketing-fatigue rules, and consent-aware eligibility checks be combined into an auditable workflow for recommending customer marketing campaigns?
+> Can a stability-aware decision layer improve the reliability of real-time, RFM-based customer segmentation and personalized campaign recommendations while maintaining low processing latency and enforcing marketing eligibility constraints?
 
 ---
 
@@ -25,6 +27,9 @@
 8. Design a WhatsApp Business API adapter with mock-by-default behaviour.
 9. Build an automated test suite covering all core modules.
 10. Produce a review-ready IEEE-style research paper draft.
+11. Establish a reproducible batch baseline with dataset hashes, preprocessing configuration, seeds, and generated outputs.
+12. Evaluate event-driven or micro-batch customer updates without retraining the complete clustering model for every event.
+13. Measure whether stability checks reduce unnecessary segment and recommendation switching while preserving eligibility guarantees.
 
 ---
 
@@ -146,11 +151,32 @@ Final-Year-Project/
 | 5 | FastAPI endpoints for all services | A | ✅ Done |
 | 6 | React frontend: upload → analysis → segments → recommendations | A | ✅ Done |
 | 7 | Automated tests (pytest) | A | ✅ Done |
-| 8 | Research paper draft | A | ✅ Done |
+| 8 | Research paper draft (`.md` and IEEEtran `.tex`) | A | ✅ Done |
 | 9 | Review presentation and demonstration materials | A | ✅ Done |
-| 10 | Database persistence + multi-tenancy | B | ✅ Done |
-| 11 | WhatsApp adapter (mock + live skeleton) | B | ✅ Done |
+| 10 | Database persistence + multi-tenancy models and isolated services | B | ⚠️ Partial; active workflow not wired |
+| 11 | WhatsApp adapter (mock + live skeleton) | B | ⚠️ Partial; mock/live adapters exist, no public webhook route |
 | 12 | Live WhatsApp sending (requires credentials) | C | 🔒 Blocked |
+
+## Research Extension Roadmap
+
+The following phases are proposed research work and are not represented as completed implementation.
+
+| Phase | Objective | Likely files | Acceptance criteria |
+|---|---|---|---|
+| R0 | Reproduce and freeze the batch baseline | `backend/scripts/generate_doc_outputs.py`, `docs/PROJECT_OUTPUTS.md` | One command records dataset hash, row counts, preprocessing, seed, library versions, and metrics. |
+| R1 | Persist tenant-aware transaction and event state | `backend/database.py`, `backend/session.py`, routers, models, tests | Restart preserves data; API requests cannot read another tenant; duplicate source events are idempotent. |
+| R2 | Add incremental or micro-batch profile updates | New event service, `backend/services/rfm.py`, clustering service, tests | A new event updates the affected customer without full historical recomputation; batch remains a comparison condition. |
+| R3 | Add stability assessment | New stability service, schemas, tests | Assignment change, centroid drift, ARI, recommendation switching, and deferred-review decisions are recorded with thresholds. |
+| R4 | Add webhook and source-event processing | New webhook router, adapter persistence, integration handoff, tests | Signatures are verified; duplicate events remain idempotent across restarts; delivery status updates persist. |
+| R5 | Run the comparative evaluation | New replay/benchmark script, `docs/PROJECT_OUTPUTS.md`, paper | Conditions A/B/C report latency, throughput, switching, stability, overhead, and policy violations with no fabricated results. |
+
+### Research hypotheses
+
+- **H1:** Event-driven profile and recommendation updates have lower event-to-decision latency than the batch workflow.
+- **H2:** Stability checks reduce unnecessary segment and recommendation changes under controlled transaction perturbations.
+- **H3:** Consent, suppression, and frequency-cap guarantees remain satisfied after the real-time extension.
+
+These are hypotheses to test, not current results.
 
 ---
 
@@ -175,3 +201,10 @@ Final-Year-Project/
 | Small dataset causes degenerate clusters | Minimum K guard; graceful fallback with warning |
 | Reviewer expects live WhatsApp demo | Demo script uses SIMULATED mode; clearly labelled |
 | UCI dataset license | CC BY 4.0 — verified; citation included |
+
+## Evidence Boundaries
+
+- The checked-in empirical output uses the bundled 57-row synthetic verification dataset, not a checked-in UCI file.
+- The reproducible recorded output contains 15 customers, selects `K=3`, and reports silhouette `0.4562`.
+- The earlier `K=4`, `0.4328`, `0.8712`, and `194.70` figures have no dataset/run provenance in this repository and must not be presented as verified baseline results.
+- SQLAlchemy models, tenant helpers, webhook parsing/deduplication, LinUCB, and CRM/POS parsers exist, but the active upload-to-recommendation workflow remains process-local and does not persist through those components.

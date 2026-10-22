@@ -44,7 +44,7 @@
   - Scroll through the generated segment cards (Champions, Loyal Customers, At Risk, Hibernating).
   - Scroll down to the **Customer RFM Feature Vectors** table showing individual R, F, and M percentiles.
 - **What to say:**
-  > "Once the pipeline executes, the system transforms raw invoices into Recency, Frequency, and Monetary (RFM) vectors. Because retail spend has a heavy right tail, we apply logarithmic transformation followed by Z-score standardization.
+  > "Once the pipeline executes, the system transforms raw invoices into Recency, Frequency, and Monetary (RFM) vectors. Because retail spend has a heavy right tail, we apply logarithmic transformation followed by robust scaling.
   >
   > Our K-Means model partitions the customer base into distinct cohorts. Rather than using arbitrary labels, our algorithm dynamically assigns behavioral labels based on centroid percentiles:
   > - High frequency, high monetary, low recency are labeled *Champions*;
@@ -54,15 +54,15 @@
 - **What to show:**
   - Click on the **"Model Metrics"** tab on the sidebar.
   - Highlight the four core metric cards:
-    - Optimal K = 4
-    - Silhouette Score = 0.4328
-    - Davies–Bouldin Index = 0.8712
-    - Calinski–Harabasz Index = 194.70
+    - Optimal K = 3 on the bundled verification dataset
+    - Silhouette Score = 0.4562
+    - Davies–Bouldin Index = 0.7150
+    - Calinski–Harabasz Index = 13.42
   - Show the bar chart of the K evaluation sweep (K = 2 to 10).
 - **What to say:**
   > "Rather than guessing the number of clusters, our system programmatically sweeps K from 2 to 10 with a reproducible random seed (seed=42).
   >
-  > As shown in this chart, K=4 achieves the peak Silhouette Score of 0.4328 and the lowest Davies–Bouldin Index (0.8712). In academic literature, a Silhouette score above 0.40 on transactional retail data confirms dense, well-separated clusters."
+  > As shown in this chart, K=3 achieves the peak Silhouette Score of 0.4562 for the bundled verification dataset. These are internal clustering metrics for a small synthetic dataset, not evidence of marketing effectiveness."
 
 ### Step 5: Explainable Recommendations & Marketing Fatigue Guardrails (2 Minutes)
 - **What to show:**

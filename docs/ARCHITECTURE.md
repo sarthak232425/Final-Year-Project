@@ -4,6 +4,8 @@
 
 ## System Overview
 
+**Implementation status:** The diagram below shows the intended platform boundary. The currently active application workflow is a process-local MVP: upload and analysis results are held in `backend/session.py`. SQLAlchemy models, tenant query helpers, webhook parsing, and adapter components exist, but they are not yet wired into the active REST workflow.
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                         FRONTEND (React/Vite)                    │
@@ -104,7 +106,8 @@ Dashboard Display / WhatsApp Adapter
 | GET | /api/v1/recommendations | Get all recommendations |
 | GET | /api/v1/recommendations/{customer_id} | Customer recommendation |
 | POST | /api/v1/campaigns/preview | Preview campaign recipients |
-| GET | /api/v1/campaigns | List campaigns |
+
+There is currently no public WhatsApp webhook endpoint, campaign persistence route, authentication layer, or real-time event update route.
 
 ---
 
@@ -187,3 +190,34 @@ WHATSAPP_WEBHOOK_VERIFY_TOKEN=
 | React | 18.x |
 | Vite | 5.x |
 | TypeScript | 5.x |
+
+## Proposed Research Extension (Not Yet Implemented)
+
+The research direction adds an event-driven or micro-batch path alongside the existing batch path. It is intentionally proposed rather than shown as a completed subsystem.
+
+```
+Transaction / order event
+  |
+  v
+Validation + idempotency + tenant context
+  |
+  v
+Persist event and update affected customer's transaction history
+  |
+  v
+Incremental or micro-batch RFM update
+  |
+  v
+Candidate cluster assignment and recommendation
+  |
+  v
+Stability assessment: assignment drift, centroid drift, ARI,
+recommendation switching, and materiality threshold
+  |
+  +--> stable and eligible: record decision / preview
+  +--> unstable or ineligible: defer, flag, and record reason
+```
+
+The extension must not retrain the complete clustering model for every event by default. Candidate strategies include affected-customer recomputation, micro-batch updates, and `MiniBatchKMeans`, with the existing batch workflow retained as condition A in the evaluation. Consent, suppression, recency, and frequency-cap checks remain mandatory after any stability decision.
+
+Planned measurements are event-to-profile latency, event-to-recommendation latency, throughput, segment switching, recommendation switching, centroid drift, Adjusted Rand Index, stability overhead, and policy violations. Historical replay is a simulation and must be labelled as such.

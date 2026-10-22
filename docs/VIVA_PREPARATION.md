@@ -16,23 +16,21 @@
 
 ---
 
-### Q2: Why did you apply log-transformation and Z-score scaling before clustering?
+### Q2: Why did you apply log-transformation and robust scaling before clustering?
 **Answer:**
 - **Skewness Correction:** In real retail datasets (such as the UCI Online Retail benchmark), Monetary spend and Frequency exhibit extreme positive skewness (Power Law / Pareto distribution), where 80% of transactions are low-value and a few outliers spend tens of thousands of dollars.
 - **Euclidean Distance Distortion:** K-Means relies on Euclidean distance:
   $$d(p, q) = \sqrt{\sum (p_i - q_i)^2}$$
   If monetary values are in thousands of dollars while frequency is single digits, monetary spend will completely dominate the distance metric, rendering frequency and recency irrelevant.
-- **Solution:** We apply $x' = \ln(x + 1)$ to compress heavy tails and stabilize variance, followed by standard Z-score scaling:
-  $$z = \frac{x' - \mu}{\sigma}$$
-  so each feature has zero mean and unit variance.
+- **Solution:** We apply $x' = \ln(x + 1)$ to compress heavy tails, followed by the implementation's `RobustScaler` so extreme retail values have less influence on Euclidean distances.
 
 ---
 
 ### Q3: How did you select the optimal number of clusters ($K$)?
 **Answer:**
 We avoided arbitrary human selection by implementing an automated multi-metric evaluation loop sweeping $K \in [2, 10]$:
-1. **Silhouette Coefficient (Rousseeuw, 1987):** Evaluates whether an instance is closer to its own cluster than neighboring clusters. Scores range from -1 to +1. Our peak score was achieved at $K=4$ (0.4328).
-2. **Davies–Bouldin Index:** Measures cluster separation based on the ratio of within-cluster scatter to between-cluster separation. Lower is better. $K=4$ yielded the minimum DBI (0.8712).
+1. **Silhouette Coefficient (Rousseeuw, 1987):** Evaluates whether an instance is closer to its own cluster than neighboring clusters. Scores range from -1 to +1. On the bundled baseline, the peak score was achieved at $K=3$ (0.4562).
+2. **Davies–Bouldin Index:** Measures cluster separation based on the ratio of within-cluster scatter to between-cluster separation. Lower is better. The bundled baseline reports 0.7150 at $K=3$; selection is driven by the implemented silhouette criterion.
 3. **Calinski–Harabasz Index (Variance Ratio Criterion):** Measures the ratio of between-cluster dispersion to within-cluster dispersion.
 Together, these indices validated that 4 clusters represented the optimal balance between granularity and cluster cohesion.
 

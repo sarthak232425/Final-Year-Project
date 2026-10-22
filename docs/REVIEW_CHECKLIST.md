@@ -15,9 +15,9 @@
 - [x] Example dataset ships with repo (`backend/data/example_transactions.csv`) and loads without error
 - [x] RFM features calculated correctly (verified against hand calculations)
 - [x] K-Means clustering runs on real data
-- [x] Silhouette Score reported (0.4328 at K=4)
-- [x] Davies–Bouldin Index reported (0.8712 at K=4)
-- [x] Calinski–Harabasz Score reported (194.70 at K=4)
+- [x] Silhouette Score reported (0.4562 at K=3 on the checked-in 57-row baseline)
+- [x] Davies–Bouldin Index reported (0.7150 at K=3 on the checked-in baseline)
+- [x] Calinski–Harabasz Score reported (13.42 at K=3 on the checked-in baseline)
 - [x] Segment labels generated dynamically from cluster statistics
 - [x] Fatigue rules enforce frequency cap (max 3 messages / 30d)
 - [x] Consent check blocks ineligible customers (`consent_given=False`)
@@ -71,8 +71,8 @@
 
 ## Priority B — After Core Works
 
-- [x] SQLite database stores results persistently (`backend/database.py`, `backend/models/`)
-- [x] Multi-tenant data isolation enforced in backend queries (`backend/services/tenancy.py`, `backend/tests/test_tenancy.py`)
+- [ ] SQLite database stores active workflow results persistently (models exist, but routers currently use `backend/session.py`)
+- [ ] Multi-tenant data isolation enforced through public API queries (isolated service and tests exist; API tenant context is not wired)
 - [x] WhatsApp mock adapter runs with SIMULATED label (`backend/adapters/whatsapp.py`)
 - [x] Webhook event deduplication implemented (`backend/adapters/whatsapp.py`, `backend/tests/test_adapters.py`)
 
@@ -86,6 +86,16 @@
 - [ ] Production cloud deployment
 
 > **Verification note (22 October 2026):** The backend suite passes with 106 tests. The frontend build passes when run from `frontend/`. Live WhatsApp sending remains blocked until verified Meta credentials are supplied, and production cloud deployment remains future work.
+
+## Research Extension — Proposed Work
+
+- [ ] Freeze a reproducible baseline manifest with dataset hash, preprocessing settings, seed, and dependency versions.
+- [ ] Add transaction-event ingestion with idempotency and persisted event records.
+- [ ] Add affected-customer or micro-batch RFM updates without full retraining per event.
+- [ ] Add stability assessment using assignment switching, centroid drift, ARI, and recommendation switching.
+- [ ] Add a public, signature-verified WhatsApp webhook route with persistent event updates.
+- [ ] Compare batch, event-driven, and stability-aware conditions for latency, throughput, stability, overhead, and policy violations.
+- [ ] Execute and document the proposed experiments without fabricating pending results.
 
 ---
 
