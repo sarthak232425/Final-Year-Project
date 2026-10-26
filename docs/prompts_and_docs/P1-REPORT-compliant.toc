@@ -1,0 +1,117 @@
+\contentsline {section}{Declaration}{iii}{Doc-Start}%
+\contentsline {section}{Acknowledgement}{iv}{Doc-Start}%
+\contentsline {section}{List of Figures}{v}{chapter*.1}%
+\contentsline {section}{List of Tables}{vi}{chapter*.2}%
+\contentsline {section}{Abbreviations}{vii}{chapter*.2}%
+\contentsline {section}{Contents}{viii}{table.0.1}%
+\contentsline {section}{Abstract}{xiii}{chapter*.3}%
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Background}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Motivation}{1}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Problem Statement}{2}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Research Question}{2}{section.1.4}%
+\contentsline {section}{\numberline {1.5}Objectives}{2}{section.1.5}%
+\contentsline {section}{\numberline {1.6}Scope}{3}{section.1.6}%
+\contentsline {section}{\numberline {1.7}Report Organization}{3}{section.1.7}%
+\contentsline {chapter}{\numberline {2}Literature Review and Technical Background}{4}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Customer Relationship Management}{4}{section.2.1}%
+\contentsline {section}{\numberline {2.2}RFM Analysis}{4}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Unsupervised Clustering}{4}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Marketing Fatigue and Consent}{5}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Explainable Artificial Intelligence}{5}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Messaging Integration}{5}{section.2.6}%
+\contentsline {chapter}{\numberline {3}Requirement Specification and Analysis}{6}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Functional Requirements}{6}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Non-Functional Requirements}{6}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Use Cases}{7}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Feasibility Analysis}{7}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Technical Feasibility}{7}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Operational Feasibility}{8}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}Economic Feasibility}{8}{subsection.3.4.3}%
+\contentsline {subsection}{\numberline {3.4.4}Legal and Ethical Feasibility}{8}{subsection.3.4.4}%
+\contentsline {chapter}{\numberline {4}System Analysis and Design}{9}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Architecture Overview}{9}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Backend Modules}{10}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Frontend Modules}{11}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Data Flow}{11}{section.4.4}%
+\contentsline {section}{\numberline {4.5}API Design}{12}{section.4.5}%
+\contentsline {section}{\numberline {4.6}Database and Persistence Boundary}{12}{section.4.6}%
+\contentsline {section}{\numberline {4.7}Design Principles}{12}{section.4.7}%
+\contentsline {chapter}{\numberline {5}Implementation}{13}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Data Ingestion and Feature Engineering}{13}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Transaction Contract}{13}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Validation and Cleaning}{13}{section.5.3}%
+\contentsline {section}{\numberline {5.4}RFM Definitions}{14}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Ordinal RFM Scores}{14}{section.5.5}%
+\contentsline {section}{\numberline {5.6}Feature Transformation}{14}{section.5.6}%
+\contentsline {section}{\numberline {5.7}Data Quality Output}{15}{section.5.7}%
+\contentsline {section}{\numberline {5.8}Clustering and Recommendation Methodology}{15}{section.5.8}%
+\contentsline {section}{\numberline {5.9}K-Means Evaluation}{15}{section.5.9}%
+\contentsline {section}{\numberline {5.10}Dynamic Segment Labels}{16}{section.5.10}%
+\contentsline {section}{\numberline {5.11}Campaign Mapping}{16}{section.5.11}%
+\contentsline {section}{\numberline {5.12}Eligibility and Fatigue Rules}{17}{section.5.12}%
+\contentsline {section}{\numberline {5.13}Recommendation Explanation}{17}{section.5.13}%
+\contentsline {section}{\numberline {5.14}Implementation Details}{18}{section.5.14}%
+\contentsline {section}{\numberline {5.15}Technology Stack}{18}{section.5.15}%
+\contentsline {section}{\numberline {5.16}Backend Application Entry Point}{18}{section.5.16}%
+\contentsline {section}{\numberline {5.17}Ingestion Service}{18}{section.5.17}%
+\contentsline {section}{\numberline {5.18}RFM Service}{19}{section.5.18}%
+\contentsline {section}{\numberline {5.19}Clustering Service}{19}{section.5.19}%
+\contentsline {section}{\numberline {5.20}Recommendation and Fatigue Services}{19}{section.5.20}%
+\contentsline {section}{\numberline {5.21}WhatsApp Adapter}{19}{section.5.21}%
+\contentsline {section}{\numberline {5.22}Selected Pseudocode}{19}{section.5.22}%
+\contentsline {section}{\numberline {5.23}Error Handling}{20}{section.5.23}%
+\contentsline {section}{\numberline {5.24}Dashboard and User Experience}{20}{section.5.24}%
+\contentsline {section}{\numberline {5.25}Dashboard Workflow}{20}{section.5.25}%
+\contentsline {section}{\numberline {5.26}Data Upload View}{20}{section.5.26}%
+\contentsline {section}{\numberline {5.27}Metrics View}{20}{section.5.27}%
+\contentsline {section}{\numberline {5.28}Segments View}{21}{section.5.28}%
+\contentsline {section}{\numberline {5.29}Recommendations View}{21}{section.5.29}%
+\contentsline {section}{\numberline {5.30}Usability Considerations}{21}{section.5.30}%
+\contentsline {section}{\numberline {5.31}Accessibility and Responsible Display}{21}{section.5.31}%
+\contentsline {chapter}{\numberline {6}Results and Evaluation}{22}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Testing Strategy}{22}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Automated Test Result}{22}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Data Quality Evaluation}{22}{section.6.3}%
+\contentsline {section}{\numberline {6.4}RFM Verification}{23}{section.6.4}%
+\contentsline {section}{\numberline {6.5}Clustering Verification}{23}{section.6.5}%
+\contentsline {section}{\numberline {6.6}Policy Verification}{23}{section.6.6}%
+\contentsline {section}{\numberline {6.7}Integration Verification}{23}{section.6.7}%
+\contentsline {section}{\numberline {6.8}Evaluation Boundaries}{23}{section.6.8}%
+\contentsline {section}{\numberline {6.9}Verified Results and Discussion}{24}{section.6.9}%
+\contentsline {section}{\numberline {6.10}Dataset Description}{24}{section.6.10}%
+\contentsline {section}{\numberline {6.11}Population Results}{24}{section.6.11}%
+\contentsline {section}{\numberline {6.12}Cluster Results}{24}{section.6.12}%
+\contentsline {section}{\numberline {6.13}Governance Results}{24}{section.6.13}%
+\contentsline {section}{\numberline {6.14}Discussion of Findings}{25}{section.6.14}%
+\contentsline {section}{\numberline {6.15}Comparison with Project Objectives}{25}{section.6.15}%
+\contentsline {section}{\numberline {6.16}Security, Privacy, Ethics, and Limitations}{25}{section.6.16}%
+\contentsline {section}{\numberline {6.17}Security Controls}{25}{section.6.17}%
+\contentsline {section}{\numberline {6.18}Privacy Controls}{26}{section.6.18}%
+\contentsline {section}{\numberline {6.19}Ethical Use}{26}{section.6.19}%
+\contentsline {section}{\numberline {6.20}Limitations of the Dataset}{26}{section.6.20}%
+\contentsline {section}{\numberline {6.21}Limitations of the Architecture}{26}{section.6.21}%
+\contentsline {section}{\numberline {6.22}Limitations of the Model}{26}{section.6.22}%
+\contentsline {section}{\numberline {6.23}Deployment and Operation}{27}{section.6.23}%
+\contentsline {section}{\numberline {6.24}Local Deployment}{27}{section.6.24}%
+\contentsline {section}{\numberline {6.25}Configuration}{27}{section.6.25}%
+\contentsline {section}{\numberline {6.26}Operational Runbook}{27}{section.6.26}%
+\contentsline {section}{\numberline {6.27}Monitoring Requirements}{27}{section.6.27}%
+\contentsline {section}{\numberline {6.28}Reproducibility Checklist}{28}{section.6.28}%
+\contentsline {chapter}{\numberline {7}Conclusion and Future Scope}{29}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Future Research and Extension}{29}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Real-Time Research Direction}{29}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Proposed Stability Measures}{29}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Proposed Experimental Conditions}{29}{section.7.4}%
+\contentsline {section}{\numberline {7.5}Future Acceptance Criteria}{30}{section.7.5}%
+\contentsline {section}{\numberline {7.6}Additional Integrations}{30}{section.7.6}%
+\contentsline {section}{\numberline {7.7}Conclusion}{30}{section.7.7}%
+\contentsline {section}{\numberline {7.8}Summary}{30}{section.7.8}%
+\contentsline {section}{\numberline {7.9}Contribution}{30}{section.7.9}%
+\contentsline {section}{\numberline {7.10}Final Status}{31}{section.7.10}%
+\contentsline {chapter}{\numberline {A}Sample API Responses}{32}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Health Response}{32}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Representative Recommendation Fields}{32}{section.A.2}%
+\contentsline {chapter}{\numberline {B}Project Traceability Matrix}{33}{appendix.B}%
+\contentsline {chapter}{REFERENCES}{34}{appendix*.16}%
+\contentsline {chapter}{\numberline {C}Repository Evidence Used}{37}{appendix.C}%
